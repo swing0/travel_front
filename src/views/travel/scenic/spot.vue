@@ -63,13 +63,13 @@
     </el-dialog>
 
 
-        <!-- 添加和修改小节表单 -->
-    <el-dialog :visible.sync="dialogVideoFormVisible" title="添加小节">
+        <!-- 添加和修改景点表单 -->
+    <el-dialog :visible.sync="dialogVideoFormVisible" title="添加景点">
     <el-form :model="video" label-width="120px">
-        <el-form-item label="小节标题">
+        <el-form-item label="景点标题">
         <el-input v-model="video.title"/>
         </el-form-item>
-        <el-form-item label="小节排序">
+        <el-form-item label="景点排序">
         <el-input-number v-model="video.sort" :min="0" controls-position="right"/>
         </el-form-item>
         <el-form-item label="是否免费">
@@ -172,10 +172,9 @@ export default {
             this.video.videoOriginalName = file.name
         },
         //上传视频之前
-        handleUploadExceed(files, fileList) {
+        handleUploadExceed() {
             this.$message.warning('想要重新上传视频，请先删除已上传的视频')
         },
-        //删除视频之前
         
 
         //小节操作==================
@@ -208,6 +207,7 @@ export default {
 
         openVideo(spotId){
             this.video = {}
+            this.fileList = []
             this.dialogVideoFormVisible = true
             this.video.scenicSpotId = spotId
         },
@@ -218,7 +218,7 @@ export default {
         },
         
         updateVideo(){
-            this.video.scenicAreaId = this.scenicId
+            this.video.scenicAreaId = this.scenicAreaId
             video.updateVideo(this.video)
                 .then(response => {
                     this.dialogVideoFormVisible = false
@@ -232,7 +232,7 @@ export default {
         },
 
         addVideo(){
-            this.video.scenicAreaId = this.scenicId
+            this.video.scenicAreaId = this.scenicAreaId
             video.addVideo(this.video)
                 .then(response => {
                     this.dialogVideoFormVisible = false
