@@ -154,6 +154,35 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/banner',
+    component: Layout,
+    redirect: '/banner/list',
+    name: 'banner管理',
+    meta: { title: 'banner', icon: 'example' },
+    children: [
+      {
+        path: 'list',
+        name: 'banner列表',
+        component: () => import('@/views/travel/banner/list'),
+        meta: { title: 'banner列表', icon: 'table' }
+      },
+      {
+        path: 'save',
+        name: '添加banner',
+        component: () => import('@/views/travel/banner/save'),
+        meta: { title: '添加banner', icon: 'tree' }
+      },
+      {
+        path: 'save/:id',
+        name: '添加banner',
+        component: () => import('@/views/travel/banner/save'),
+        meta: { title: '修改banner', icon: 'tree' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [

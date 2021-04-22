@@ -22,7 +22,7 @@
       <el-button type="default" @click="resetData()">清空</el-button>
     </el-form>
 
-            <!-- 表格 -->
+    <!-- 表格 -->
     <el-table
       :data="list"
       element-loading-text="数据加载中"
@@ -109,7 +109,7 @@ export default {
         this.getList()
     },
     methods:{//创建具体的方法，调用admin.js定义的方法
-        //管理员列表
+        //景区列表
         getList(page = 1){
             this.page = page
             scenic.getListScenic(this.page,this.limit,this.scenicQuery)
