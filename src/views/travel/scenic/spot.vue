@@ -20,7 +20,7 @@
             {{ spot.title }}
 
             <span class="acts">
-                <el-button type="text" @click="openVideo(spot.id)">添加景点</el-button>
+                <el-button type="text" @click="openVideo(spot.id)">添加视频</el-button>
                 <el-button style="" type="text" @click="openEditSpot(spot.id)">编辑</el-button>
                 <el-button type="text" @click="deleteSpot(spot.id)">删除</el-button>
             </span>
@@ -52,8 +52,26 @@
             <el-form-item label="景点标题">
                 <el-input v-model="spot.title"/>
             </el-form-item>
+            <el-form-item label="景点描述">
+                <el-input type="textarea" :rows="2" v-model="spot.content"/>
+            </el-form-item>
             <el-form-item label="景点排序">
                 <el-input-number v-model="spot.sort" :min="0" controls-position="right"/>
+            </el-form-item>
+            <!-- 景区封面-->
+            <el-form-item  label="景点封面" >
+
+            <el-upload
+                style="text-align: left"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+                :action="BASE_API+'/traveloss/fileoss'"
+                class="avatar-uploader">
+                <img style="width: 50%"
+                    :src="spot.cover"
+                    :fit="fit">
+            </el-upload>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -124,7 +142,9 @@ export default {
             spotVideoList:[],
             spot:{
                 title:'',
-                sort:0
+                sort:0,
+                content:'',
+                cover:''
             },
             video:{
                 title:'',
@@ -176,7 +196,23 @@ export default {
             this.$message.warning('想要重新上传视频，请先删除已上传的视频')
         },
         
+        //上传成功调用的方法
+        handleAvatarSuccess(res,file){
+            this.spot.cover = res.data.url
+        },
+        //上传之前调用的方法
+        beforeAvatarUpload(file){
+            const isJPG = file.type === 'image/jpeg'
+            const isLt2M = file.size / 1024 / 1024 < 2
 
+            if (!isJPG) {
+                this.$message.error('上传头像图片只能是 JPG 格式!')
+            }
+            if (!isLt2M) {
+                this.$message.error('上传头像图片大小不能超过 2MB!')
+            }
+            return isJPG && isLt2M
+        },
         //小节操作==================
 
         editVideo(videoId){
@@ -286,6 +322,8 @@ export default {
             this.dialogSpotFormVisible = true
             this.spot.title = ''
             this.spot.sort = 0
+            this.spot.content = ''
+            this.spot.cover = '/static/defaultSpot.png'
         },
 
         //添加景点
